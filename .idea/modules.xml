@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/analise_de_banco_de_dados.iml" filepath="$PROJECT_DIR$/analise_de_banco_de_dados.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/analise_de_banco_de_dados_android.iml" filepath="$PROJECT_DIR$/android/analise_de_banco_de_dados_android.iml" />
+    </modules>
+  </component>
+</project>
