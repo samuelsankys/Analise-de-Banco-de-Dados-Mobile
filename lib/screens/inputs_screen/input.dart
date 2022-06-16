@@ -1,4 +1,5 @@
 import 'package:analise_de_banco_de_dados/constants.dart';
+import 'package:analise_de_banco_de_dados/controllers/sqlite.controller.dart';
 import 'package:flutter/material.dart';
 
 class InputScreen extends StatefulWidget {
@@ -16,6 +17,17 @@ class _InputScreenState extends State<InputScreen> {
 
   final TextEditingController nController = TextEditingController();
   final TextEditingController rController = TextEditingController();
+
+  final SqliteController sqlite = SqliteController();
+
+_InputScreenState(){
+
+}
+
+  initsqlite(){
+  
+  }
+
 
   @override
   Widget build(BuildContext context) {
