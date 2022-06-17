@@ -4,8 +4,8 @@ import 'package:analise_de_banco_de_dados/models/sqlite.dart';
 
 class SqliteController {
 
-  Future<void> insert() async{
-     await SQLHelper.createItem(
+  Future<int> insert() async{
+     return await SQLHelper.createItem(
         1000, 
         20.5, 
         'abcdefghijklmnopqrstuvwxyz', 

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class InputScreen extends StatefulWidget {
   InputScreen(
-    this._db_select,
+    this.db_select,
   );
-  final List<bool> _db_select;
+  final List<bool> db_select;
 
   @override
   State<InputScreen> createState() => _InputScreenState();
@@ -20,12 +20,34 @@ class _InputScreenState extends State<InputScreen> {
 
   final SqliteController sqlite = SqliteController();
 
-_InputScreenState(){
 
-}
 
-  initsqlite(){
-  
+  opa(n, r) async{
+    var bancos_selecionados = widget.db_select;
+    
+
+    bancos_selecionados.forEach((e)=> print(e.toString()));
+    
+    operacoesSQLite(n, r);
+    print('Opaaa');
+    print(r);
+    print(n);
+  }
+
+  operacoesSQLite(n, r) async {
+    r = int.parse(r);
+    n = int.parse(n);
+
+    List<int> ids = [];
+
+    for(var i = 0; i < r; i++){
+      for(var j = 0; j < n; j++){
+        var id = await sqlite.insert();
+        ids.add(id);
+      }
+    }
+
+    print(ids);
   }
 
 
@@ -125,7 +147,7 @@ _InputScreenState(){
                 highlightColor: Colors.amber.withOpacity(0.3),
                 splashColor: Colors.amberAccent.withOpacity(0.5),
                 onTap: () {
-                  
+                  opa(nController.text, rController.text);
                 },
                 child: Ink(
                   height: 50,
