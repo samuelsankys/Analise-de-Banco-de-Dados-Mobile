@@ -41,10 +41,14 @@ class _InputScreenState extends State<InputScreen> {
     List<int> ids = [];
 
     for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
       for(var j = 0; j < n; j++){
         var id = await sqlite.insert();
         ids.add(id);
       }
+      var fim = new DateTime.now();
+      var difference = fim.difference(inicio);//.inMicroseconds;
+      print(difference);
     }
 
     print(ids);
