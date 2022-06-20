@@ -1,6 +1,9 @@
 import 'package:analise_de_banco_de_dados/constants.dart';
+import 'package:analise_de_banco_de_dados/controllers/hive.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/sqlite.controller.dart';
+import 'package:analise_de_banco_de_dados/models/hive.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class InputScreen extends StatefulWidget {
   InputScreen(
@@ -19,6 +22,8 @@ class _InputScreenState extends State<InputScreen> {
   final TextEditingController rController = TextEditingController();
 
   final SqliteController sqlite = SqliteController();
+  final HiveController hiveController = HiveController();
+  final HiveHelper hiveHelper = HiveHelper();
 
 
 
@@ -28,10 +33,19 @@ class _InputScreenState extends State<InputScreen> {
 
     bancos_selecionados.forEach((e)=> print(e.toString()));
     
-    operacoesSQLite(n, r);
+    //operacoesSQLite(n, r);
+    operacoesHive();
     print('Opaaa');
     print(r);
     print(n);
+  }
+
+  operacoesHive() async {
+    
+    await hiveController.insert();
+    var select = await hiveController.select();
+    print('select depois do insert');
+    print(select);
   }
 
   operacoesSQLite(n, r) async {
@@ -54,6 +68,12 @@ class _InputScreenState extends State<InputScreen> {
     print(ids);
   }
 
+@override
+  void dispose(){
+    Hive.box('hive_box').close();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
