@@ -11,10 +11,13 @@ import 'package:analise_de_banco_de_dados/models/hive_models.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
-  //await CouchbaseLiteFlutter.init();
+  //HIVE
   await Hive.initFlutter();
   //await Hive.openBox<HiveModel>('hive_box');
   Hive.registerAdapter(HiveModelAdapter());
+
+  // OBJECTBOX
+  //final store = await openStore(); 
   
   runApp( ABD());
 }

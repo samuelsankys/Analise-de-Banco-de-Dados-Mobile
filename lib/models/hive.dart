@@ -7,7 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class HiveHelper {
 
   Future<Box<HiveModel>> createOpenBox()async {
-    return await Hive.openBox<HiveModel>('hive_boxx');
+    return await Hive.openBox<HiveModel>('hive_box');
   }
   
   // INSERT
@@ -19,24 +19,26 @@ class HiveHelper {
   }
 
   // SELECT
-  Map<String, dynamic> readItem(int key) {
-    Box hive_box = Hive.box('hive_box');
-    final item = hive_box.get(key);
+  //Map<String, dynamic> 
+  readItem(int key) async {
+    HiveHelper helper = HiveHelper();
+    Box<HiveModel> boxHive = await helper.createOpenBox();
+    final item = boxHive.get(key);
     return item;
   }
 
-  
-
   // Update an item by id
   Future<void> updateItem(int itemKey, HiveModel hive) async {
-    final hive_box = Hive.box('hive_box');
-    await hive_box.put(itemKey, hive);
+     HiveHelper helper = HiveHelper();
+    Box<HiveModel> boxHive = await helper.createOpenBox();
+    await boxHive.put(itemKey, hive);
   }
 
   // Delete
  Future<void> deleteItem(int itemKey) async {
-  final hive_box = Hive.box('hive_box');
-    await hive_box.delete(itemKey);
+    HiveHelper helper = HiveHelper();
+    Box<HiveModel> boxHive = await helper.createOpenBox();
+    await boxHive.delete(itemKey);
   }
 
   closeHive(){

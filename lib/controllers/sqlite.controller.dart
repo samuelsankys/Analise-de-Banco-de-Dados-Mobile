@@ -1,6 +1,7 @@
 
 
 import 'package:analise_de_banco_de_dados/models/sqlite.dart';
+import 'package:sqflite/sqflite.dart';
 
 class SqliteController {
 
@@ -28,6 +29,19 @@ class SqliteController {
         'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
         DateTime.now().toString()
         );
+  }
+  dropTable() async {
+    final db = await SQLHelper.db();
+    await SQLHelper.dropTables(db);
+  }
+  closesqlite() async {
+    final db = await SQLHelper.db();
+    await db.close();
+  }
+
+  createTable() async {
+    final db = await SQLHelper.db();
+    await SQLHelper.createTables(db);
   }
 
 }

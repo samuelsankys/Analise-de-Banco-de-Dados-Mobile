@@ -1,7 +1,9 @@
 import 'package:analise_de_banco_de_dados/constants.dart';
 import 'package:analise_de_banco_de_dados/controllers/hive.controller.dart';
+import 'package:analise_de_banco_de_dados/controllers/objectBox.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/sqlite.controller.dart';
 import 'package:analise_de_banco_de_dados/models/hive.dart';
+import 'package:analise_de_banco_de_dados/models/sqlite.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -22,7 +24,9 @@ class _InputScreenState extends State<InputScreen> {
   final TextEditingController rController = TextEditingController();
 
   final SqliteController sqlite = SqliteController();
+  final SQLHelper sqliteHelper = SQLHelper();
   final HiveController hiveController = HiveController();
+  final ObjectBoxController objectBoxController = ObjectBoxController();
   final HiveHelper hiveHelper = HiveHelper();
 
 
@@ -35,23 +39,35 @@ class _InputScreenState extends State<InputScreen> {
     
     //operacoesSQLite(n, r);
     operacoesHive();
+    //operacoesObjectBox();
     print('Opaaa');
     print(r);
     print(n);
   }
 
+  operacoesObjectBox() async {
+    
+    var insert = await objectBoxController.insert();
+    var select = await objectBoxController.select();
+    print('select depois do insert');
+    print(insert);
+    //print(select);
+  }
+
   operacoesHive() async {
     
-    await hiveController.insert();
-    var select = await hiveController.select();
+    var select = await hiveController.insert();
+     //await hiveController.select();
     print('select depois do insert');
     print(select);
   }
 
   operacoesSQLite(n, r) async {
+   sqlite.createTable();
     r = int.parse(r);
     n = int.parse(n);
-
+  print('entrou');
+ 
     List<int> ids = [];
 
     for(var i = 0; i < r; i++){
@@ -66,11 +82,13 @@ class _InputScreenState extends State<InputScreen> {
     }
 
     print(ids);
+    //sqlite.closesqlite();
+    sqlite.dropTable();
   }
 
 @override
   void dispose(){
-    Hive.box('hive_box').close();
+    //Hive.box('hive_box').close();
 
     super.dispose();
   }

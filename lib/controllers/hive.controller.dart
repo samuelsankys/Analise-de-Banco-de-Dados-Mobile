@@ -10,8 +10,8 @@ class HiveController {
   Future<void> insert() async{
     HiveHelper hiveHelper = HiveHelper();
      return await hiveHelper.createItem( HiveModel(
-        1000, 
-        20.5, 
+        2000, 
+        30.5, 
         'abcdefghijklmnopqrstuvwxyz', 
         'abcdefghijklmnopqrstuvwxyz', 
         DateTime.now().toString(),
@@ -20,18 +20,18 @@ class HiveController {
   }
 
   select() async {
-    return await SQLHelper.getItems();
+    return await HiveHelper.readItem();
   }
   
-  update(id) async {
-    await SQLHelper.updateItem(
-        id,
-        9999, 
-        333.8, 
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
-        DateTime.now().toString()
-        );
-  }
+  // update(id) async {
+  //   await HiveHelper.updateItem(
+  //       id,
+  //       9999, 
+  //       333.8, 
+  //       'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
+  //       'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
+  //       DateTime.now().toString()
+  //       );
+  // }
 
 }
