@@ -2,6 +2,7 @@
 
 import 'package:analise_de_banco_de_dados/models/hive.dart';
 import 'package:analise_de_banco_de_dados/models/sqlite.dart';
+import 'package:hive/hive.dart';
 
 import '../models/hive_models.dart';
 
@@ -20,18 +21,35 @@ class HiveController {
   }
 
   select() async {
-    return await HiveHelper.readItem();
+    HiveHelper hiveHelper = HiveHelper();
+    return await hiveHelper.readItem();
+  }
+
+  update(id) async {
+    HiveHelper hiveHelper = HiveHelper();
+    await hiveHelper.updateItem(
+        id,
+        HiveModel(
+          9999, 
+          333.8, 
+          'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
+          'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
+          DateTime.now().toString(),
+          DateTime.now().toString()
+        )
+      );
+  }
+
+  delete(id) async{
+    HiveHelper hiveHelper = HiveHelper();
+    await hiveHelper.deleteItem(id);
+  }
+
+  dropHive() async {
+    HiveHelper helper = HiveHelper();
+    Box<HiveModel> boxHive = await helper.createOpenBox();
+    boxHive.clear();
   }
   
-  // update(id) async {
-  //   await HiveHelper.updateItem(
-  //       id,
-  //       9999, 
-  //       333.8, 
-  //       'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
-  //       'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
-  //       DateTime.now().toString()
-  //       );
-  // }
 
 }

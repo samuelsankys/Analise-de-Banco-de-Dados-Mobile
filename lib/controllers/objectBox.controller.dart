@@ -33,4 +33,9 @@ Future<int> insert() async{
     ));
   }
 
+  delete(id) async {
+    ObjectBoxHelper objectBoxHelper = ObjectBoxHelper();
+    await objectBoxHelper.deleteItem(id);
+  }
+
 }

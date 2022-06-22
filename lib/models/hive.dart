@@ -20,11 +20,18 @@ class HiveHelper {
 
   // SELECT
   //Map<String, dynamic> 
-  readItem(int key) async {
+  /*Future<List<int>>*/ readItem() async {
     HiveHelper helper = HiveHelper();
-    Box<HiveModel> boxHive = await helper.createOpenBox();
-    final item = boxHive.get(key);
-    return item;
+    var boxHive = await helper.createOpenBox();
+    List<HiveModel> listItem = [];
+
+    for (int i = 0; i < boxHive.length; i++){
+      var item = boxHive.getAt(i);
+
+      print(item?.key);
+    }
+    
+    //return item;
   }
 
   // Update an item by id
@@ -41,7 +48,5 @@ class HiveHelper {
     await boxHive.delete(itemKey);
   }
 
-  closeHive(){
-    Hive.close();
-  }
+
 }

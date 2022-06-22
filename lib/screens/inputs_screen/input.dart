@@ -38,8 +38,8 @@ class _InputScreenState extends State<InputScreen> {
     bancos_selecionados.forEach((e)=> print(e.toString()));
     
     //operacoesSQLite(n, r);
-    operacoesHive();
-    //operacoesObjectBox();
+    //operacoesHive();
+    operacoesObjectBox();
     print('Opaaa');
     print(r);
     print(n);
@@ -57,9 +57,10 @@ class _InputScreenState extends State<InputScreen> {
   operacoesHive() async {
     
     var select = await hiveController.insert();
-     //await hiveController.select();
+    await hiveController.select();
     print('select depois do insert');
-    print(select);
+    await hiveController.dropHive();
+    //print(select);
   }
 
   operacoesSQLite(n, r) async {
