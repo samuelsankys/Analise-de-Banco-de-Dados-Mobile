@@ -48,9 +48,16 @@ class _InputScreenState extends State<InputScreen> {
   operacoesObjectBox() async {
     
     var insert = await objectBoxController.insert();
-    var select = await objectBoxController.select();
-    print('select depois do insert');
+    var selectList = await objectBoxController.select();
+    //print('select depois do insert');
+    for (var select in selectList){
+      print(select.id);
+    }
+    
     print(insert);
+    //await objectBoxController.closeObject();
+    
+    //objectBoxController.closeObject();
     //print(select);
   }
 

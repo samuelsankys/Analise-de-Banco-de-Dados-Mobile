@@ -4,14 +4,13 @@ import 'package:analise_de_banco_de_dados/objectbox.g.dart';
 
 class ObjectBoxHelper {
   Store? store;
-
+  
   Future<Store> createOpenBox()async {
     return store ??= await openStore(); 
   }
 
   getBox() async {
-    ObjectBoxHelper helper = ObjectBoxHelper();
-    final boxStore = await helper.createOpenBox();
+    final boxStore = await this.createOpenBox();
     return boxStore.box<ObjectBoxModel>();
     
   }
@@ -26,7 +25,7 @@ class ObjectBoxHelper {
   //Map<String, dynamic> 
   readItem() async {
     final box = await getBox();
-    return box.getAll();
+    return box.getAll() as List<ObjectBoxModel>;
   }
 
   // Update an item by id
@@ -42,8 +41,7 @@ class ObjectBoxHelper {
   }
 
   closeObjectBox() async{
-    ObjectBoxHelper helper = ObjectBoxHelper();
-    final storeBox = await helper.createOpenBox();
-    storeBox.close();
+     final box = await getBox();
+     box.close();
   }
 }

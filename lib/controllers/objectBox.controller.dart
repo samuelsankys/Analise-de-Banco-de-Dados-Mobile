@@ -3,10 +3,10 @@ import 'package:analise_de_banco_de_dados/models/objectBox_models.dart';
 import 'package:objectbox/objectbox.dart';
 
 class ObjectBoxController {
+ final _objectBoxHelper = ObjectBoxHelper();
 
 Future<int> insert() async{
-    ObjectBoxHelper objectBoxHelper = ObjectBoxHelper();
-     return await objectBoxHelper.createItem( ObjectBoxModel(
+     return await _objectBoxHelper.createItem( ObjectBoxModel(
         A0: 3000, 
         A1: 40.5, 
         A2: 'abcdefghijklmnopqrstuvwxyz', 
@@ -17,13 +17,11 @@ Future<int> insert() async{
   }
 
   select() async {
-    ObjectBoxHelper objectBoxHelper = ObjectBoxHelper();
-    return await objectBoxHelper.readItem();
+    return await _objectBoxHelper.readItem();
   }
   
   update(id) async {
-    ObjectBoxHelper objectBoxHelper = ObjectBoxHelper();
-    await objectBoxHelper.updateItem(  ObjectBoxModel(
+    await _objectBoxHelper.updateItem(  ObjectBoxModel(
         A0: 9999, 
         A1: 333.8, 
         A2: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
@@ -34,8 +32,10 @@ Future<int> insert() async{
   }
 
   delete(id) async {
-    ObjectBoxHelper objectBoxHelper = ObjectBoxHelper();
-    await objectBoxHelper.deleteItem(id);
+    await _objectBoxHelper.deleteItem(id);
   }
 
+  closeObject() async{
+    await _objectBoxHelper.closeObjectBox();
+  }
 }
