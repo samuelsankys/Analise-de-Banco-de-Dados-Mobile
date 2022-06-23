@@ -1,6 +1,7 @@
 import 'package:analise_de_banco_de_dados/constants.dart';
 import 'package:analise_de_banco_de_dados/controllers/hive.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/objectBox.controller.dart';
+import 'package:analise_de_banco_de_dados/controllers/sembast.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/sqlite.controller.dart';
 import 'package:analise_de_banco_de_dados/models/hive.dart';
 import 'package:analise_de_banco_de_dados/models/sqlite.dart';
@@ -27,6 +28,7 @@ class _InputScreenState extends State<InputScreen> {
   final SQLHelper sqliteHelper = SQLHelper();
   final HiveController hiveController = HiveController();
   final ObjectBoxController objectBoxController = ObjectBoxController();
+  final SembastController sembastController = SembastController();
   final HiveHelper hiveHelper = HiveHelper();
 
 
@@ -39,10 +41,18 @@ class _InputScreenState extends State<InputScreen> {
     
     //operacoesSQLite(n, r);
     //operacoesHive();
-    operacoesObjectBox();
+    //operacoesObjectBox();
+    operacoesSembast();
+
     print('Opaaa');
     print(r);
     print(n);
+  }
+
+  operacoesSembast() async {
+    var insert = await sembastController.insert();
+     var select = await sembastController.select();
+    print(select);
   }
 
   operacoesObjectBox() async {
