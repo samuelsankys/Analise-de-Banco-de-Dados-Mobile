@@ -1,4 +1,5 @@
 import 'package:analise_de_banco_de_dados/constants.dart';
+import 'package:analise_de_banco_de_dados/controllers/couchbase.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/hive.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/objectBox.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/sembast.controller.dart';
@@ -29,6 +30,7 @@ class _InputScreenState extends State<InputScreen> {
   final HiveController hiveController = HiveController();
   final ObjectBoxController objectBoxController = ObjectBoxController();
   final SembastController sembastController = SembastController();
+  final CouchBaseController couchBaseController = CouchBaseController();
   final HiveHelper hiveHelper = HiveHelper();
 
 
@@ -42,11 +44,22 @@ class _InputScreenState extends State<InputScreen> {
     //operacoesSQLite(n, r);
     //operacoesHive();
     //operacoesObjectBox();
-    operacoesSembast();
+    //operacoesSembast();
+    operacoesCoucheBase();
 
     print('Opaaa');
     print(r);
     print(n);
+  }
+  operacoesCoucheBase()async{
+    final db = couchBaseController.openDataBase();
+    var insert = await couchBaseController.insert();
+    var select = await couchBaseController.select();
+    //var insert3 = await couchBaseController.insert();
+    print(insert);
+    print(select);
+    //print(insert3);
+    await couchBaseController.closeObject();
   }
 
   operacoesSembast() async {
