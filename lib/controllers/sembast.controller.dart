@@ -1,5 +1,5 @@
 
-import 'package:analise_de_banco_de_dados/models/sembast.dart';
+import 'package:analise_de_banco_de_dados/database/sembast.dart';
 import 'package:analise_de_banco_de_dados/models/sembast_models.dart';
 
 class SembastController {

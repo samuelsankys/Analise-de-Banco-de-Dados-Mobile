@@ -1,6 +1,6 @@
-import 'package:analise_de_banco_de_dados/models/objectBox.dart';
+import 'package:analise_de_banco_de_dados/database/objectBox.dart';
 import 'package:analise_de_banco_de_dados/models/objectBox_models.dart';
-import 'package:objectbox/objectbox.dart';
+
 
 class ObjectBoxController {
  final _objectBoxHelper = ObjectBoxHelper();

@@ -4,10 +4,11 @@ import 'package:analise_de_banco_de_dados/controllers/hive.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/objectBox.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/sembast.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/sqlite.controller.dart';
-import 'package:analise_de_banco_de_dados/models/hive.dart';
+import 'package:analise_de_banco_de_dados/database/hive.dart';
 import 'package:analise_de_banco_de_dados/models/sqlite.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+
+import '../result_screen/result.dart';
 
 class InputScreen extends StatefulWidget {
   InputScreen(
@@ -35,7 +36,7 @@ class _InputScreenState extends State<InputScreen> {
 
 
 
-  opa(n, r) async{
+  Future<bool> opa(n, r) async{
     var bancos_selecionados = widget.db_select;
     
 
@@ -50,7 +51,10 @@ class _InputScreenState extends State<InputScreen> {
     print('Opaaa');
     print(r);
     print(n);
+    return true;
   }
+
+
   operacoesCoucheBase()async{
     final db = couchBaseController.openDataBase();
     var insert = await couchBaseController.insert();
@@ -97,7 +101,7 @@ class _InputScreenState extends State<InputScreen> {
    sqlite.createTable();
     r = int.parse(r);
     n = int.parse(n);
-  print('entrou');
+    print('entrou');
  
     List<int> ids = [];
 
@@ -219,8 +223,13 @@ class _InputScreenState extends State<InputScreen> {
               child: InkWell(
                 highlightColor: Colors.amber.withOpacity(0.3),
                 splashColor: Colors.amberAccent.withOpacity(0.5),
-                onTap: () {
-                  opa(nController.text, rController.text);
+                onTap: ()async {
+                  final result = await opa(nController.text, rController.text);
+                  Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ResultScreen(result)));
                 },
                 child: Ink(
                   height: 50,

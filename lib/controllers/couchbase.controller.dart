@@ -1,4 +1,4 @@
-import 'package:analise_de_banco_de_dados/models/couchbase.dart';
+import 'package:analise_de_banco_de_dados/database/couchbase.dart';
 import 'package:analise_de_banco_de_dados/models/couchbase_models.dart';
 
 class CouchBaseController {

@@ -1,7 +1,6 @@
 
 
-import 'package:analise_de_banco_de_dados/models/hive.dart';
-import 'package:analise_de_banco_de_dados/models/sqlite.dart';
+import 'package:analise_de_banco_de_dados/database/hive.dart';
 import 'package:hive/hive.dart';
 
 import '../models/hive_models.dart';
