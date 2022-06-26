@@ -1,18 +1,38 @@
-import 'package:analise_de_banco_de_dados/constants.dart';
+import 'package:analise_de_banco_de_dados/screens/result_screen/geral_result/geral_result.dart';
+import 'package:analise_de_banco_de_dados/screens/result_screen/menu.dart';
 import 'package:flutter/material.dart';
+
+import 'geral_result/coluna_operacao_geral.dart';
 
 class ResultScreen extends StatefulWidget {
   ResultScreen(
     this.result,
   );
   final bool result;
-  List<bool> _abas = [true, false, false,false];
 
   @override
   State<ResultScreen> createState() => _ResultScreenState();
 }
 
 class _ResultScreenState extends State<ResultScreen> {
+  List<bool> _abas = [true, false, false, false];
+  String tituloGeral = 'Geral';
+  String tituloOperacao = 'Operação';
+  String tituloResumo = 'Resumo';
+  String tituloGrafico = 'Gráfico';
+
+  String tituloOperacaoInsert = 'Insert';
+  String tituloOperacaoUpdate = 'Update';
+  String tituloOperacaoDelete = 'Delete';
+  String tituloOperacaoSelect = 'Select';
+
+  List<double> dataInsert = [0.10, 0.11,0.45];
+  List<double> dataUpdate = [0.10, 0.11,0.45];
+  List<double> dataDelete = [0.10, 0.11,0.45];
+  List<double> dataSelect = [0.10, 0.11,0.45];
+
+  String tituloDataBase = 'SQLite';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,38 +65,60 @@ class _ResultScreenState extends State<ResultScreen> {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          child: InkWell(
-                            highlightColor: Colors.amber.withOpacity(0.3),
-                            splashColor: Colors.amberAccent.withOpacity(0.5),
-                            onTap: () {
-                              
-                            },
-                            child: Ink(
-                              height: 30,
-                              width: 60,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Geral',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                color: kPrimaryColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                              ),
-                            ),
-                          ),
-                        ),
+                        Menu(
+                            titulo: tituloGeral,
+                            ativo: _abas[0],
+                            onFlatButtonPress: () {
+                              setState(() {
+                                _abas = _abas.map<bool>((v) => false).toList();
+                                _abas[0] = true;
+                              });
+                            }),
+                        Menu(
+                            titulo: tituloOperacao,
+                            ativo: _abas[1],
+                            onFlatButtonPress: () {
+                              setState(() {
+                                _abas = _abas.map<bool>((v) => false).toList();
+                                _abas[1] = true;
+                              });
+                            }),
+                        Menu(
+                            titulo: tituloResumo,
+                            ativo: _abas[2],
+                            onFlatButtonPress: () {
+                              print('clicked');
+                              setState(() {
+                                _abas = _abas.map<bool>((v) => false).toList();
+                                _abas[2] = true;
+                                print('clicked');
+                              });
+                            }),
+                        Menu(
+                            titulo: tituloGrafico,
+                            ativo: _abas[3],
+                            onFlatButtonPress: () {
+                              setState(() {
+                                _abas = _abas.map<bool>((v) => false).toList();
+                                _abas[3] = true;
+                              });
+                            }),
                       ],
                     ),
+                    GeralResult(
+                      tituloDataBase: tituloDataBase,
+                      tituloOperacaoInsert: tituloOperacaoInsert, 
+                      tituloOperacaoSelect: tituloOperacaoSelect, 
+                      tituloOperacaoUpdate: tituloOperacaoUpdate, 
+                      tituloOperacaoDelete: tituloOperacaoDelete,
+                      dataInsert: dataInsert,
+                      dataSelect: dataSelect,
+                      dataUpdate: dataUpdate,
+                      dataDelete: dataDelete
+                      ),
+                   
                   ],
                 ),
               ),
@@ -87,3 +129,5 @@ class _ResultScreenState extends State<ResultScreen> {
     );
   }
 }
+
+
