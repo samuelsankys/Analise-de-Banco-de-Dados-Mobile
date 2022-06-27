@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class ListGeral extends StatelessWidget {
@@ -12,22 +10,19 @@ class ListGeral extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
+    
+    return SizedBox(
+      height:310,
       child: ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (context, index){
+        physics: NeverScrollableScrollPhysics(),
+        //scrollDirection: Axis.vertical,
+        itemCount: 20,
+        itemBuilder: (context, index) {
           return Text(
-            data[index].toString(),
-          style: TextStyle(
-              fontSize: 12,
-              color: Colors.black87),
-        );
-        }
-       
-          
-        
-      ),
+            '0,002',
+            style: TextStyle(fontSize: 12, color: Colors.black87),
+          );
+        }),
     );
   }
 }

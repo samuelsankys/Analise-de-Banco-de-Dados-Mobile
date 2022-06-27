@@ -229,7 +229,7 @@ class _InputScreenState extends State<InputScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    ResultScreen(result)));
+                                    ResultScreen(result,  widget.db_select)));
                 },
                 child: Ink(
                   height: 50,

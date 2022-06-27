@@ -22,6 +22,7 @@ class CalculadoResult extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             tituloCalculo,
@@ -30,26 +31,29 @@ class CalculadoResult extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Colors.black87),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '0,00145',
-                style: TextStyle(fontSize: 12, color: Colors.black87),
-              ),
-              Text(
-                '0,00145',
-                style: TextStyle(fontSize: 12, color: Colors.black87),
-              ),
-              Text(
-                '0,00145',
-                style: TextStyle(fontSize: 12, color: Colors.black87),
-              ),
-              Text(
-                '0,00145',
-                style: TextStyle(fontSize: 12, color: Colors.black87),
-              ),
-            ],
+          Container(
+            //margin: EdgeInsets.only(right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  '0,00145',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                Text(
+                  '0,00145',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                Text(
+                  '0,00145',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                Text(
+                  '0,00145',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+              ],
+            ),
           ),
         ],
       ),
