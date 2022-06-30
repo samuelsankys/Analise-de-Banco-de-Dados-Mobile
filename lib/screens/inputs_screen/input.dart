@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:analise_de_banco_de_dados/constants.dart';
 import 'package:analise_de_banco_de_dados/controllers/couchbase.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/hive.controller.dart';
@@ -42,15 +44,15 @@ class _InputScreenState extends State<InputScreen> {
 
     bancos_selecionados.forEach((e)=> print(e.toString()));
     
-    //operacoesSQLite(n, r);
+    operacoesSQLite(n, r);
     //operacoesHive();
     //operacoesObjectBox();
     //operacoesSembast();
-    operacoesCoucheBase();
+    //operacoesCoucheBase();
 
-    print('Opaaa');
-    print(r);
-    print(n);
+    //print('Opaaa');
+    //print(r);
+    //print(n);
     return true;
   }
 
@@ -97,29 +99,120 @@ class _InputScreenState extends State<InputScreen> {
     //print(select);
   }
 
+// ############################################################################
+// ############# OPERAÇÕES SQLITE  ############################################
+// ############################################################################
+
   operacoesSQLite(n, r) async {
-   sqlite.createTable();
+    await sqlite.createTable();
     r = int.parse(r);
     n = int.parse(n);
-    print('entrou');
- 
+    
+    Map<String, List<dynamic>> runtimeSqlite = {};
+    Map<String, List<dynamic>> insertRes = await insertSQLite(n, r );
+    var selectRes = await selectSQLite(n, r, insertRes['ids']);
+    var updateRes = await updateSQLite(n, r, insertRes['ids']);
+    var deleteRes = await deleteSQLite(n, r, insertRes['ids']);
+
+    print(insertRes['differenceInsert']);
+    print(selectRes);
+    print(updateRes);
+    print(deleteRes);
+
+    if( 
+       await selectRes.length > 0 && 
+       await deleteRes.length > 0 && 
+       await updateRes.length > 0){
+
+      await sqlite.closesqlite();
+      await sqlite.dropTable();
+    }
+  }
+
+  Future< Map<String, List<dynamic>>> insertSQLite(n, r ) async {
+    var differenceInsert = [];
+    Map<String, List<dynamic>> result = {};
     List<int> ids = [];
 
+      for(var i = 0; i < r; i++){
+        var inicio = new DateTime.now();
+        for(var j = 0; j < n; j++){
+          var id = await sqlite.insert();
+          ids.add( id);
+        }
+        var fim = new DateTime.now();
+        var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+        var mediaDiff = diffEmMicro/n;
+        var convertSecond = mediaDiff/1000000;
+        differenceInsert.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+      }
+      result['ids'] = ids;
+      result['differenceInsert'] = differenceInsert;
+      //runtimeSqlite['insert'] = differenceInsert;
+      return await result;
+  } 
+  Future<List<dynamic>> selectSQLite(n, r, ids) async{
+    var differenceSelect = [];
+
+     for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        var item = await sqlite.select(ids[i+j]);
+      }
+      var fim = new DateTime.now();
+     var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceSelect.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+    return differenceSelect;
+  }
+
+  Future<dynamic> updateSQLite(n, r, ids) async{
+    var differenceUpdate = [];
+    
     for(var i = 0; i < r; i++){
       var inicio = new DateTime.now();
       for(var j = 0; j < n; j++){
-        var id = await sqlite.insert();
-        ids.add(id);
+        var item = await sqlite.update(ids[i+j]);
       }
       var fim = new DateTime.now();
-      var difference = fim.difference(inicio);//.inMicroseconds;
-      print(difference);
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceUpdate.add(convertSecond.toStringAsFixed(6)); //.insegundo;
     }
-
-    print(ids);
-    //sqlite.closesqlite();
-    sqlite.dropTable();
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceUpdate;
   }
+
+  deleteSQLite(n, r, ids) async{
+    var differenceDelete = [];
+    
+    for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        await sqlite.delete(ids[i+j]);
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceDelete.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceDelete;
+  }
+
+
+
+
+
+
+
 
 @override
   void dispose(){
@@ -225,11 +318,11 @@ class _InputScreenState extends State<InputScreen> {
                 splashColor: Colors.amberAccent.withOpacity(0.5),
                 onTap: ()async {
                   final result = await opa(nController.text, rController.text);
-                  Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ResultScreen(result,  widget.db_select)));
+                  // Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) =>
+                  //                   ResultScreen(result,  widget.db_select)));
                 },
                 child: Ink(
                   height: 50,

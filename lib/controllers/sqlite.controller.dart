@@ -16,12 +16,16 @@ class SqliteController {
         );
   }
 
-  select() async {
+  Future<List<Map<String, dynamic>>>select(id) async{
+    return await SQLHelper.getItemById(id);
+  }
+
+  Future<List<Map<String, dynamic>>> selectAll() async {
     return await SQLHelper.getItems();
   }
   
-  update(id) async {
-    await SQLHelper.updateItem(
+  Future<int> update(id) async {
+    return await SQLHelper.updateItem(
         id,
         9999, 
         333.8, 
@@ -30,6 +34,10 @@ class SqliteController {
         DateTime.now().toString()
         );
   }
+  delete(id) async {
+    await SQLHelper.deleteItem(id);
+  }
+
   dropTable() async {
     final db = await SQLHelper.db();
     await SQLHelper.dropTables(db);
