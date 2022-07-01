@@ -17,31 +17,37 @@ class ObjectBoxHelper {
   
   // INSERT
   Future<int> createItem(ObjectBoxModel objectBox) async {
-    final box = await getBox();
+    final box = await this.getBox();
     return box.put(objectBox);
   }
 
   // SELECT
   //Map<String, dynamic> 
   readItem() async {
-    final box = await getBox();
+    final box = await this.getBox();
     return box.getAll() as List<ObjectBoxModel>;
+  }
+
+  getById(id) async {
+    final box = await this.getBox();
+    return box.get(id);
   }
 
   // Update an item by id
   Future<int> updateItem(ObjectBoxModel objectBox) async {
-    final box = await getBox();
+    final box = await this.getBox();
     return box.put(objectBox);
   }
 
   // Delete
  Future<void> deleteItem(int itemKey) async {
-     final box = await getBox();
+     final box = await this.getBox();
     return box.remove(itemKey);
   }
 
   closeObjectBox() async{
-     final box = await getBox();
-     box.close();
+     final box = await this.getBox();
+     await box.removeAll();
+  
   }
 }

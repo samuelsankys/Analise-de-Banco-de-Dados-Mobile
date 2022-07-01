@@ -16,12 +16,13 @@ Future<int> insert() async{
      ));
   }
 
-  select() async {
-    return await _objectBoxHelper.readItem();
+  select(id) async {
+    return await _objectBoxHelper.getById(id);
   }
   
   update(id) async {
     await _objectBoxHelper.updateItem(  ObjectBoxModel(
+        id: id,
         A0: 9999, 
         A1: 333.8, 
         A2: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 

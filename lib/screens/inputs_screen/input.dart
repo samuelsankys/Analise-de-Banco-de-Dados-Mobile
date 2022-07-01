@@ -7,6 +7,7 @@ import 'package:analise_de_banco_de_dados/controllers/objectBox.controller.dart'
 import 'package:analise_de_banco_de_dados/controllers/sembast.controller.dart';
 import 'package:analise_de_banco_de_dados/controllers/sqlite.controller.dart';
 import 'package:analise_de_banco_de_dados/database/hive.dart';
+import 'package:analise_de_banco_de_dados/database/objectBox.dart';
 import 'package:analise_de_banco_de_dados/models/sqlite.dart';
 import 'package:flutter/material.dart';
 
@@ -35,6 +36,7 @@ class _InputScreenState extends State<InputScreen> {
   final SembastController sembastController = SembastController();
   final CouchBaseController couchBaseController = CouchBaseController();
   final HiveHelper hiveHelper = HiveHelper();
+  final ObjectBoxHelper objectBoxHelper = ObjectBoxHelper();
 
 
 
@@ -44,9 +46,9 @@ class _InputScreenState extends State<InputScreen> {
 
     bancos_selecionados.forEach((e)=> print(e.toString()));
     
-    operacoesSQLite(n, r);
-    //operacoesHive();
-    //operacoesObjectBox();
+    //operacoesSQLite(n, r);
+    //operacoesHive(n, r);
+    operacoesObjectBox(n, r);
     //operacoesSembast();
     //operacoesCoucheBase();
 
@@ -74,29 +76,201 @@ class _InputScreenState extends State<InputScreen> {
     print(select);
   }
 
-  operacoesObjectBox() async {
-    
-    var insert = await objectBoxController.insert();
-    var selectList = await objectBoxController.select();
-    //print('select depois do insert');
-    for (var select in selectList){
-      print(select.id);
-    }
-    
-    print(insert);
-    //await objectBoxController.closeObject();
-    
-    //objectBoxController.closeObject();
-    //print(select);
+// ############################################################################
+// #############   OPERAÇÕES OBJECT BOX   #####################################
+// ############################################################################
+
+  operacoesObjectBox(n, r) async {
+    r = int.parse(r);
+    n = int.parse(n);
+
+    Map<String, List<dynamic>> insertRes = await insertObjectBox(n, r);
+    var selectRes = await selectObjectBox(n, r, insertRes['ids']);
+    var updateRes = await updateObjectBox(n, r, insertRes['ids']);
+    var deleteRes = await deleteObjectBox(n, r, insertRes['ids']);
+
+    print(insertRes['differenceInsert']);
+    print(selectRes);
+    print(updateRes);
+    print(deleteRes);
+  
   }
 
-  operacoesHive() async {
+  Future<Map<String, List<dynamic>>> insertObjectBox(n, r) async {
+    var differenceInsert = [];
+    Map<String, List<dynamic>> result = {};
+    List<int> ids = [];
+
+      for(var i = 0; i < r; i++){
+        var inicio = new DateTime.now();
+        for(var j = 0; j < n; j++){
+          var id = await objectBoxController.insert();
+          ids.add( id);
+        }
+        var fim = new DateTime.now();
+        var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+        var mediaDiff = diffEmMicro/n;
+        var convertSecond = mediaDiff/1000000;
+        differenceInsert.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+      }
+      result['ids'] = ids;
+      result['differenceInsert'] = differenceInsert;
+      //runtimeSqlite['insert'] = differenceInsert;
+      return await result;
+  }
+
+  Future<List<dynamic>> selectObjectBox(n, r, ids) async{
+    var differenceSelect = [];
+
+     for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        var item = await objectBoxController.select(ids[i+j]);
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceSelect.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+    return differenceSelect;
+  }
+
+  Future<dynamic> updateObjectBox(n, r, ids) async{
+    var differenceUpdate = [];
     
-    var select = await hiveController.insert();
-    await hiveController.select();
-    print('select depois do insert');
-    await hiveController.dropHive();
+    for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        var item = await objectBoxController.update(ids[i+j]);
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceUpdate.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceUpdate;
+  }
+
+  deleteObjectBox(n, r, ids) async{
+    var differenceDelete = [];
+    
+    for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        await objectBoxController.delete(ids[i+j]);
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceDelete.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceDelete;
+  }
+// ############################################################################
+// #############   OPERAÇÕES HIVE   ###########################################
+// ############################################################################
+
+  operacoesHive(n, r) async {
+    r = int.parse(r);
+    n = int.parse(n);
+  
+    var insertRes = await insertHive(n, r);
+    var selectRes = await selectHive(n, r);
+    var updateRes = await updateHive(n, r);
+    var deleteRes = await deleteHive(n, r);
+
+    //var select = await hiveController.selectAll(n*r);
+
+    print(insertRes);
+    print(selectRes);
+    print(updateRes);
+    print(deleteRes);
     //print(select);
+    
+    await hiveController.dropHive();
+  }
+
+  Future<List<dynamic>> insertHive(n, r) async {
+    var differenceInsert = [];
+    Map<String, List<dynamic>> result = {};
+    List<int> ids = [];
+
+      for(var i = 0; i < r; i++){
+        var inicio = new DateTime.now();
+        for(var j = 0; j < n; j++){
+          await hiveController.insert();
+        }
+        var fim = new DateTime.now();
+        var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+        var mediaDiff = diffEmMicro/n;
+        var convertSecond = mediaDiff/1000000;
+        differenceInsert.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+      }
+      return await differenceInsert;
+  }
+
+  Future<List<dynamic>> selectHive(n, r) async{
+    var differenceSelect = [];
+
+     for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        var item = await hiveController.select(i+j);
+      }
+      var fim = new DateTime.now();
+     var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceSelect.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+    return differenceSelect;
+  }
+
+  Future<dynamic> updateHive(n, r) async{
+    var differenceUpdate = [];
+    
+    for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        var item = await hiveController.update(i+j);
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceUpdate.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceUpdate;
+  }
+
+  deleteHive(n, r) async{
+    var differenceDelete = [];
+    
+    for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        await hiveController.delete(i+j);
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceDelete.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceDelete;
   }
 
 // ############################################################################

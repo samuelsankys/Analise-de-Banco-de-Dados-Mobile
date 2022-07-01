@@ -19,14 +19,19 @@ class HiveController {
      ));
   }
 
-  select() async {
+  select(id) async {
     HiveHelper hiveHelper = HiveHelper();
-    return await hiveHelper.readItem();
+    return await hiveHelper.readItem(id);
+  }
+
+  selectAll(ids) async {
+    HiveHelper hiveHelper = HiveHelper();
+    return await hiveHelper.getAll(ids);
   }
 
   update(id) async {
     HiveHelper hiveHelper = HiveHelper();
-    await hiveHelper.updateItem(
+    return await hiveHelper.updateItem(
         id,
         HiveModel(
           9999, 
