@@ -38,23 +38,34 @@ class SembastHelper {
     }).toList();
   }
 
-  // Update an item by id
-  Future updateItem(SembastModel sembast) async {
+  getById(id) async {
     final _db = await getBox();
-    final finder = Finder(filter: Filter.byKey(sembast));
+    final recordSnapshot = await _store.record(id).get(await _db);
+    return recordSnapshot;
+  }
+
+  // Update an item by id
+  Future updateItem(SembastModel sembast, id) async {
+    final _db = await getBox();
+    final finder = Finder(filter: Filter.byKey(id));
     await _store.update(await _db, sembast.toJson(),finder: finder);
     
   }
 
   // Delete
- Future<void> deleteItem(SembastModel sembast) async {
+ Future<void> deleteItem(id) async {
      final _db = await getBox();
-    final finder = Finder(filter: Filter.byKey(sembast));
+    final finder = Finder(filter: Filter.byKey(id));
     await _store.delete(await _db, finder: finder);
   }
 
   closeSembast() async{
      final _db = await getBox();
      _db.close();
+  }
+
+    dropSembast() async{
+     final _db = await this.getBox();
+     _store.delete(_db);
   }
 }

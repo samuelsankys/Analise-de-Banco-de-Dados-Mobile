@@ -17,11 +17,11 @@ Future<int> insert() async{
      ));
   }
 
-  select() async {
-    return await _sembastHelper.readItem();
+  select(id) async {
+    return await _sembastHelper.getById(id);
   }
   
-  update() async {
+  update(id) async {
     await _sembastHelper.updateItem(  SembastModel(
         A0: 9999, 
         A1: 333.8, 
@@ -29,7 +29,7 @@ Future<int> insert() async{
         A3: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
         A4 : DateTime.now().millisecondsSinceEpoch.toString(),
         A5 : DateTime.now().toString()
-    ));
+    ), id);
   }
 
   delete(id) async {
@@ -38,5 +38,9 @@ Future<int> insert() async{
 
   closeObject() async{
     await _sembastHelper.closeSembast();
+  }
+
+  dropDb()async{
+    await _sembastHelper.dropSembast();
   }
 }

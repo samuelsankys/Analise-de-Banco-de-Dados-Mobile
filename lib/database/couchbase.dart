@@ -11,29 +11,25 @@ class CouchBaseHelper {
   Future openDB() async {
     database = await Database.openAsync('couchbase');
     //return database;
-  }
+  } 
   
   // INSERT
-  Future<bool> createItem(CouchBaseModel couchBase) async {
-     await openDB();
-    final doc = MutableDocument.withId('couch',couchBase.toJson());
-    final a = await database?.saveDocument(doc);
-    if(a != null){
-      return a;
-    }else{
-      return false;
-    }
+  Future<int> createItem(CouchBaseModel couchBase, id) async {
+    await openDB();
+    final doc = MutableDocument.withId(id.toString(), couchBase.toJson());
+    await database?.saveDocument(doc);
+    return id;
   }
 
-//   // SELECT
-  readItem() async {
-    final doc = await database?.document('couch');
-    return doc?.sequence;
+  // SELECT
+  Future<dynamic> readItem(id) async {
+    final doc = await database?.document(id.toString());
+    return doc;
   }
 
   // Update an item by id
-  Future updateItem(CouchBaseModel couchBase) async {
-    final doc = await database?.document('couch');
+  Future updateItem(CouchBaseModel couchBase, id) async {
+    final doc = await database?.document(id.toString());
 
     final mutableDoc = doc!.toMutable();
     mutableDoc['A0'].value = couchBase.A0;
@@ -47,12 +43,30 @@ class CouchBaseHelper {
   }
 
   // Delete
- Future<void> deleteItem(CouchBaseModel couchBase) async {
-    final doc = await database?.document('couch');
+  Future<void> deleteItem(id) async {
+    final doc = await database?.document(id.toString());
     await database?.deleteDocument(doc!);
+  }
+
+  selectAll()async{
+    final query = const QueryBuilder()
+    .select(
+      SelectResult.all()
+    )
+    .from(DataSource.database(database!));
+
+  final resultSet = await query.execute();
+  final results = await resultSet
+    .asStream()
+    // Converts each result into a `Map`, consisting only of plain Dart values.
+    .map((result) => result.toPlainMap())
+    .toList();
+
+  print(results);
   }
 
   closeCouchBase() async{
      database?.close();
   }
+ 
 }

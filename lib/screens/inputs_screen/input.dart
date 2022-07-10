@@ -40,40 +40,246 @@ class _InputScreenState extends State<InputScreen> {
 
 
 
-  Future<bool> opa(n, r) async{
+  Future execOperacoes(n, r) async{
     var bancos_selecionados = widget.db_select;
+
+    var results = {};
     
 
     bancos_selecionados.forEach((e)=> print(e.toString()));
     
-    //operacoesSQLite(n, r);
-    //operacoesHive(n, r);
-    operacoesObjectBox(n, r);
-    //operacoesSembast();
-    //operacoesCoucheBase();
+    results['sqlite'] = await operacoesSQLite(n, r);
+    results['hive'] = await operacoesHive(n, r);
+    results['objectbox'] = await operacoesObjectBox(n, r);
+    results['sembast'] = await operacoesSembast(n, r);
+    results['couchbase'] = await operacoesCoucheBase(n, r);
 
-    //print('Opaaa');
-    //print(r);
-    //print(n);
-    return true;
+    
+    return results;
   }
+// ############################################################################
+// #############   OPERAÇÕES CoucheBase   ########################################
+// ############################################################################
 
+  operacoesCoucheBase(n, r) async {
+    r = int.parse(r);
+    n = int.parse(n);
+    var runtimeCouchBase = {};
 
-  operacoesCoucheBase()async{
-    final db = couchBaseController.openDataBase();
-    var insert = await couchBaseController.insert();
-    var select = await couchBaseController.select();
-    //var insert3 = await couchBaseController.insert();
-    print(insert);
-    print(select);
-    //print(insert3);
+    final db =  await couchBaseController.openDataBase();
+
+    Map<String, List<dynamic>> insertRes = await insertCoucheBase(n, r);
+    var updateRes = await updateCoucheBase(n, r, insertRes['ids']);
+    var selectRes = await selectCoucheBase(n, r, insertRes['ids']);
+    var deleteRes = await deleteCoucheBase(n, r, insertRes['ids']);
+
+    print(insertRes['differenceInsert']);
+    print(selectRes);
+    print(updateRes);
+    print(deleteRes);
+
+    runtimeCouchBase['insert'] = insertRes['differenceInsert'];
+    runtimeCouchBase['select'] = selectRes;
+    runtimeCouchBase['update'] = updateRes;
+    runtimeCouchBase['delete'] = deleteRes;
+
     await couchBaseController.closeObject();
+    return runtimeCouchBase;
   }
 
-  operacoesSembast() async {
-    var insert = await sembastController.insert();
-     var select = await sembastController.select();
-    print(select);
+  Future<Map<String, List<dynamic>>> insertCoucheBase(n, r) async {
+    var differenceInsert = [];
+    Map<String, List<dynamic>> result = {};
+    List<int> ids = [];
+
+      for(var i = 0; i < r; i++){
+        var inicio = new DateTime.now();
+        for(var j = 0; j < n; j++){
+          var id = await couchBaseController.insert(i+j);
+          print('id: ${id}');
+          ids.add(id);
+        }
+        var fim = new DateTime.now();
+        var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+        var mediaDiff = diffEmMicro/n;
+        var convertSecond = mediaDiff/1000000;
+        differenceInsert.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+      }
+      result['ids'] = ids;
+      result['differenceInsert'] = differenceInsert;
+      //runtimeSqlite['insert'] = differenceInsert;
+      return await result;
+  }
+
+  Future<List<dynamic>> selectCoucheBase(n, r, ids) async{
+    var differenceSelect = [];
+
+     for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        var item = await couchBaseController.select(ids[i+j]);
+        print('select: ${item}');
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceSelect.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+    return differenceSelect;
+  }
+
+  Future updateCoucheBase(n, r, ids) async{
+    var differenceUpdate = [];
+    
+    for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        await couchBaseController.update(ids[i+j]);
+        //print('update: ${item}');
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceUpdate.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceUpdate;
+  }
+
+  deleteCoucheBase(n, r, ids) async{
+    var differenceDelete = [];
+    
+    for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        await couchBaseController.delete(ids[i+j]);
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceDelete.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceDelete;
+  }
+
+// ############################################################################
+// #############   OPERAÇÕES SEMBAST   ########################################
+// ############################################################################
+
+  operacoesSembast(n, r) async {
+    r = int.parse(r);
+    n = int.parse(n);
+
+    var runtimeSembast = {};
+
+    Map<String, List<dynamic>> insertRes = await insertSembast(n, r);
+    var updateRes = await updateSembast(n, r, insertRes['ids']);
+    var selectRes = await selectSembast(n, r, insertRes['ids']);
+    var deleteRes = await deleteSembast(n, r, insertRes['ids']);
+     selectRes = await selectSembast(n, r, insertRes['ids']);
+
+    print(insertRes['differenceInsert']);
+    print(selectRes);
+    print(updateRes);
+    print(deleteRes);
+
+    runtimeSembast['insert'] = insertRes['differenceInsert'];
+    runtimeSembast['select'] = selectRes;
+    runtimeSembast['update'] = updateRes;
+    runtimeSembast['delete'] = deleteRes;
+
+    await sembastController.dropDb();
+
+    return runtimeSembast;
+  }
+
+  Future<Map<String, List<dynamic>>> insertSembast(n, r) async {
+    var differenceInsert = [];
+    Map<String, List<dynamic>> result = {};
+    List<int> ids = [];
+
+      for(var i = 0; i < r; i++){
+        var inicio = new DateTime.now();
+        for(var j = 0; j < n; j++){
+          var id = await sembastController.insert();
+          print('id: ${id}');
+          ids.add( id);
+        }
+        var fim = new DateTime.now();
+        var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+        var mediaDiff = diffEmMicro/n;
+        var convertSecond = mediaDiff/1000000;
+        differenceInsert.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+      }
+      result['ids'] = ids;
+      result['differenceInsert'] = differenceInsert;
+      //runtimeSqlite['insert'] = differenceInsert;
+      return await result;
+  }
+
+  Future<List<dynamic>> selectSembast(n, r, ids) async{
+    var differenceSelect = [];
+
+     for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        var item = await sembastController.select(ids[i+j]);
+        print('select: ${item}');
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceSelect.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+    return differenceSelect;
+  }
+
+  Future<dynamic> updateSembast(n, r, ids) async{
+    var differenceUpdate = [];
+    
+    for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        var item = await sembastController.update(ids[i+j]);
+        print('update: ${item}');
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceUpdate.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceUpdate;
+  }
+
+  deleteSembast(n, r, ids) async{
+    var differenceDelete = [];
+    
+    for(var i = 0; i < r; i++){
+      var inicio = new DateTime.now();
+      for(var j = 0; j < n; j++){
+        await sembastController.delete(ids[i+j]);
+      }
+      var fim = new DateTime.now();
+      var diffEmMicro = (fim.difference(inicio).inMicroseconds);
+      var mediaDiff = diffEmMicro/n;
+      var convertSecond = mediaDiff/1000000;
+      differenceDelete.add(convertSecond.toStringAsFixed(6)); //.insegundo;
+    }
+    //runtimeSqlite['select'] = differenceSelect;
+   
+    return differenceDelete;
   }
 
 // ############################################################################
@@ -84,6 +290,8 @@ class _InputScreenState extends State<InputScreen> {
     r = int.parse(r);
     n = int.parse(n);
 
+    var runtimeObjectBox = {};
+
     Map<String, List<dynamic>> insertRes = await insertObjectBox(n, r);
     var selectRes = await selectObjectBox(n, r, insertRes['ids']);
     var updateRes = await updateObjectBox(n, r, insertRes['ids']);
@@ -93,7 +301,13 @@ class _InputScreenState extends State<InputScreen> {
     print(selectRes);
     print(updateRes);
     print(deleteRes);
+
+    runtimeObjectBox['insert'] = insertRes['differenceInsert'];
+    runtimeObjectBox['select'] = selectRes;
+    runtimeObjectBox['update'] = updateRes;
+    runtimeObjectBox['delete'] = deleteRes;
   
+    return runtimeObjectBox;
   }
 
   Future<Map<String, List<dynamic>>> insertObjectBox(n, r) async {
@@ -181,6 +395,8 @@ class _InputScreenState extends State<InputScreen> {
   operacoesHive(n, r) async {
     r = int.parse(r);
     n = int.parse(n);
+
+    var runtimeHive = {};
   
     var insertRes = await insertHive(n, r);
     var selectRes = await selectHive(n, r);
@@ -196,6 +412,13 @@ class _InputScreenState extends State<InputScreen> {
     //print(select);
     
     await hiveController.dropHive();
+
+    runtimeHive['insert'] = insertRes;
+    runtimeHive['select'] = selectRes;
+    runtimeHive['update'] = updateRes;
+    runtimeHive['delete'] = deleteRes;
+  
+    return runtimeHive;
   }
 
   Future<List<dynamic>> insertHive(n, r) async {
@@ -282,7 +505,7 @@ class _InputScreenState extends State<InputScreen> {
     r = int.parse(r);
     n = int.parse(n);
     
-    Map<String, List<dynamic>> runtimeSqlite = {};
+    var runtimeSqlite = {};
     Map<String, List<dynamic>> insertRes = await insertSQLite(n, r );
     var selectRes = await selectSQLite(n, r, insertRes['ids']);
     var updateRes = await updateSQLite(n, r, insertRes['ids']);
@@ -301,6 +524,13 @@ class _InputScreenState extends State<InputScreen> {
       await sqlite.closesqlite();
       await sqlite.dropTable();
     }
+
+    runtimeSqlite['insert'] = insertRes['differenceInsert'];
+    runtimeSqlite['select'] = selectRes;
+    runtimeSqlite['update'] = updateRes;
+    runtimeSqlite['delete'] = deleteRes;
+
+    return runtimeSqlite;
   }
 
   Future< Map<String, List<dynamic>>> insertSQLite(n, r ) async {
@@ -491,12 +721,12 @@ class _InputScreenState extends State<InputScreen> {
                 highlightColor: Colors.amber.withOpacity(0.3),
                 splashColor: Colors.amberAccent.withOpacity(0.5),
                 onTap: ()async {
-                  final result = await opa(nController.text, rController.text);
-                  // Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //               builder: (context) =>
-                  //                   ResultScreen(result,  widget.db_select)));
+                  final result = await execOperacoes(nController.text, rController.text);
+                  Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ResultScreen(result,  widget.db_select)));
                 },
                 child: Ink(
                   height: 50,

@@ -8,7 +8,7 @@ class ResultScreen extends StatefulWidget {
     this.result,
     this.selectDataBase,
   );
-  final bool result;
+  final result;
   final List<bool> selectDataBase;
 
   @override
