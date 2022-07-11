@@ -29,6 +29,8 @@ class _MenuState extends State<Menu> {
         splashColor: Colors.amberAccent.withOpacity(0.5),
         onTap: () {
          widget.onFlatButtonPress;
+         print(widget.onFlatButtonPress);
+         print(widget.ativo);
         },  
         child: Ink(
           height: 30,

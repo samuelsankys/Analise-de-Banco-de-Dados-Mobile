@@ -1,7 +1,9 @@
+import 'package:analise_de_banco_de_dados/constants.dart';
 import 'package:analise_de_banco_de_dados/screens/result_screen/geral_result/geral_result.dart';
 import 'package:analise_de_banco_de_dados/screens/result_screen/menu.dart';
+import 'package:analise_de_banco_de_dados/screens/result_screen/operacao_result/operacao_result.dart';
+import 'package:analise_de_banco_de_dados/screens/result_screen/resumo_result/resumo_result.dart';
 import 'package:flutter/material.dart';
-
 
 class ResultScreen extends StatefulWidget {
   ResultScreen(
@@ -16,7 +18,7 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  List<bool> _abas = [true, false, false, false];
+
   String tituloGeral = 'Geral';
   String tituloOperacao = 'Operação';
   String tituloResumo = 'Resumo';
@@ -27,11 +29,6 @@ class _ResultScreenState extends State<ResultScreen> {
   String tituloOperacaoDelete = 'Delete';
   String tituloOperacaoSelect = 'Select';
 
-  List<double> dataInsert = [0.10, 0.11,0.45];
-  List<double> dataUpdate = [0.10, 0.11,0.45];
-  List<double> dataDelete = [0.10, 0.11,0.45];
-  List<double> dataSelect = [0.10, 0.11,0.45];
-
   String tituloDataBaseSqlite = 'SQLite';
   String tituloDataBaseSembast = 'Sembast';
   String tituloDataBaseCouchBase = 'Couchbasedb-Lite';
@@ -40,157 +37,549 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.only(top: 35),
-        height: double.infinity,
-        width: double.infinity,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Text(
-                      'Resultados',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87),
-                    ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(
+        length: 4,
+        child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: kWarningColor,
+              title: const Text('Resultados'),
+              // Use TabBar to show the three tabs
+              bottom: TabBar(
+                tabs: const <Widget>[
+                  Tab(
+                    text: 'Geral',
+                  ),
+                  Tab(
+                    text: 'Operação',
+                  ),
+                  Tab(
+                    text: 'Resumo',
+                  ),
+                  Tab(
+                    text: 'Gráfico',
                   ),
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Menu(
-                          titulo: tituloGeral,
-                          ativo: _abas[0],
-                          onFlatButtonPress: () {
-                            setState(() {
-                              _abas = _abas.map<bool>((v) => false).toList();
-                              _abas[0] = true;
-                            });
-                          }),
-                      Menu(
-                          titulo: tituloOperacao,
-                          ativo: _abas[1],
-                          onFlatButtonPress: () {
-                            setState(() {
-                              _abas = _abas.map<bool>((v) => false).toList();
-                              _abas[1] = true;
-                            });
-                          }),
-                      Menu(
-                          titulo: tituloResumo,
-                          ativo: _abas[2],
-                          onFlatButtonPress: () {
-                            print('clicked');
-                            setState(() {
-                              _abas = _abas.map<bool>((v) => false).toList();
-                              _abas[2] = true;
-                              print('clicked');
-                            });
-                          }),
-                      Menu(
-                          titulo: tituloGrafico,
-                          ativo: _abas[3],
-                          onFlatButtonPress: () {
-                            setState(() {
-                              _abas = _abas.map<bool>((v) => false).toList();
-                              _abas[3] = true;
-                            });
-                          }),
-                    ],
-                  ),
-                  Container(
-                    height:480,
-                    child: SingleChildScrollView(
-                      child: Container(
-                        child: Column(
-                          children: [
-                            widget.selectDataBase[0]? GeralResult(
-                              tituloDataBase: tituloDataBaseSqlite,
-                              tituloOperacaoInsert: tituloOperacaoInsert, 
-                              tituloOperacaoSelect: tituloOperacaoSelect, 
-                              tituloOperacaoUpdate: tituloOperacaoUpdate, 
-                              tituloOperacaoDelete: tituloOperacaoDelete,
-                              dataInsert: dataInsert,
-                              dataSelect: dataSelect,
-                              dataUpdate: dataUpdate,
-                              dataDelete: dataDelete
-                              ): Container(),
-                              
-                              widget.selectDataBase[1]?
-                              GeralResult(
-                              tituloDataBase: tituloDataBaseCouchBase,
-                              tituloOperacaoInsert: tituloOperacaoInsert, 
-                              tituloOperacaoSelect: tituloOperacaoSelect, 
-                              tituloOperacaoUpdate: tituloOperacaoUpdate, 
-                              tituloOperacaoDelete: tituloOperacaoDelete,
-                              dataInsert: dataInsert,
-                              dataSelect: dataSelect,
-                              dataUpdate: dataUpdate,
-                              dataDelete: dataDelete
-                              ): Container(),
-                              
-                              widget.selectDataBase[2]? GeralResult(
-                              tituloDataBase: tituloDataBaseHive,
-                              tituloOperacaoInsert: tituloOperacaoInsert, 
-                              tituloOperacaoSelect: tituloOperacaoSelect, 
-                              tituloOperacaoUpdate: tituloOperacaoUpdate, 
-                              tituloOperacaoDelete: tituloOperacaoDelete,
-                              dataInsert: dataInsert,
-                              dataSelect: dataSelect,
-                              dataUpdate: dataUpdate,
-                              dataDelete: dataDelete
-                              ): Container(),
-                              
-                              widget.selectDataBase[3]? GeralResult(
-                              tituloDataBase: tituloDataBaseObjectBox,
-                              tituloOperacaoInsert: tituloOperacaoInsert, 
-                              tituloOperacaoSelect: tituloOperacaoSelect, 
-                              tituloOperacaoUpdate: tituloOperacaoUpdate, 
-                              tituloOperacaoDelete: tituloOperacaoDelete,
-                              dataInsert: dataInsert,
-                              dataSelect: dataSelect,
-                              dataUpdate: dataUpdate,
-                              dataDelete: dataDelete
-                              ): Container(),
-                              
-                              widget.selectDataBase[4]? GeralResult(
-                              tituloDataBase: tituloDataBaseSembast,
-                              tituloOperacaoInsert: tituloOperacaoInsert, 
-                              tituloOperacaoSelect: tituloOperacaoSelect, 
-                              tituloOperacaoUpdate: tituloOperacaoUpdate, 
-                              tituloOperacaoDelete: tituloOperacaoDelete,
-                              dataInsert: dataInsert,
-                              dataSelect: dataSelect,
-                              dataUpdate: dataUpdate,
-                              dataDelete: dataDelete
-                              ): Container(),
-                          ],
-                        ),
+            body: TabBarView(
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 480,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    widget.selectDataBase[0]
+                                        ? GeralResult(
+                                            tituloDataBase:
+                                                tituloDataBaseSqlite,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['sqlite']
+                                                ['insert'],
+                                            dataSelect: widget.result['sqlite']
+                                                ['select'],
+                                            dataUpdate: widget.result['sqlite']
+                                                ['update'],
+                                            dataDelete: widget.result['sqlite']
+                                                ['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[1]
+                                        ? GeralResult(
+                                            tituloDataBase:
+                                                tituloDataBaseCouchBase,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget
+                                                .result['couchbase']['insert'],
+                                            dataSelect: widget
+                                                .result['couchbase']['select'],
+                                            dataUpdate: widget
+                                                .result['couchbase']['update'],
+                                            dataDelete: widget
+                                                .result['couchbase']['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[2]
+                                        ? GeralResult(
+                                            tituloDataBase: tituloDataBaseHive,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['hive']
+                                                ['insert'],
+                                            dataSelect: widget.result['hive']
+                                                ['select'],
+                                            dataUpdate: widget.result['hive']
+                                                ['update'],
+                                            dataDelete: widget.result['hive']
+                                                ['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[3]
+                                        ? GeralResult(
+                                            tituloDataBase:
+                                                tituloDataBaseObjectBox,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget
+                                                .result['objectbox']['insert'],
+                                            dataSelect: widget
+                                                .result['objectbox']['select'],
+                                            dataUpdate: widget
+                                                .result['objectbox']['update'],
+                                            dataDelete: widget
+                                                .result['objectbox']['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[4]
+                                        ? GeralResult(
+                                            tituloDataBase:
+                                                tituloDataBaseSembast,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['sembast']
+                                                ['insert'],
+                                            dataSelect: widget.result['sembast']
+                                                ['select'],
+                                            dataUpdate: widget.result['sembast']
+                                                ['update'],
+                                            dataDelete: widget.result['sembast']
+                                                ['delete'])
+                                        : Container(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                 
-                ],
-              ),
-            ),
-          ],
-        ),
+                  ],
+                ),
+
+
+                Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 480,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    widget.selectDataBase[0]
+                                        ? OperacaoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseSqlite,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['sqlite']
+                                                ['insert'],
+                                            dataSelect: widget.result['sqlite']
+                                                ['select'],
+                                            dataUpdate: widget.result['sqlite']
+                                                ['update'],
+                                            dataDelete: widget.result['sqlite']
+                                                ['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[1]
+                                        ? OperacaoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseCouchBase,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget
+                                                .result['couchbase']['insert'],
+                                            dataSelect: widget
+                                                .result['couchbase']['select'],
+                                            dataUpdate: widget
+                                                .result['couchbase']['update'],
+                                            dataDelete: widget
+                                                .result['couchbase']['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[2]
+                                        ? OperacaoResult(
+                                            tituloDataBase: tituloDataBaseHive,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['hive']
+                                                ['insert'],
+                                            dataSelect: widget.result['hive']
+                                                ['select'],
+                                            dataUpdate: widget.result['hive']
+                                                ['update'],
+                                            dataDelete: widget.result['hive']
+                                                ['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[3]
+                                        ? OperacaoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseObjectBox,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget
+                                                .result['objectbox']['insert'],
+                                            dataSelect: widget
+                                                .result['objectbox']['select'],
+                                            dataUpdate: widget
+                                                .result['objectbox']['update'],
+                                            dataDelete: widget
+                                                .result['objectbox']['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[4]
+                                        ? OperacaoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseSembast,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['sembast']
+                                                ['insert'],
+                                            dataSelect: widget.result['sembast']
+                                                ['select'],
+                                            dataUpdate: widget.result['sembast']
+                                                ['update'],
+                                            dataDelete: widget.result['sembast']
+                                                ['delete'])
+                                        : Container(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+
+              Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 480,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    widget.selectDataBase[0]
+                                        ? ResumoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseSqlite,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['sqlite']
+                                                ['insert'],
+                                            dataSelect: widget.result['sqlite']
+                                                ['select'],
+                                            dataUpdate: widget.result['sqlite']
+                                                ['update'],
+                                            dataDelete: widget.result['sqlite']
+                                                ['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[1]
+                                        ? ResumoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseCouchBase,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget
+                                                .result['couchbase']['insert'],
+                                            dataSelect: widget
+                                                .result['couchbase']['select'],
+                                            dataUpdate: widget
+                                                .result['couchbase']['update'],
+                                            dataDelete: widget
+                                                .result['couchbase']['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[2]
+                                        ? ResumoResult(
+                                            tituloDataBase: tituloDataBaseHive,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['hive']
+                                                ['insert'],
+                                            dataSelect: widget.result['hive']
+                                                ['select'],
+                                            dataUpdate: widget.result['hive']
+                                                ['update'],
+                                            dataDelete: widget.result['hive']
+                                                ['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[3]
+                                        ? ResumoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseObjectBox,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget
+                                                .result['objectbox']['insert'],
+                                            dataSelect: widget
+                                                .result['objectbox']['select'],
+                                            dataUpdate: widget
+                                                .result['objectbox']['update'],
+                                            dataDelete: widget
+                                                .result['objectbox']['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[4]
+                                        ? ResumoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseSembast,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['sembast']
+                                                ['insert'],
+                                            dataSelect: widget.result['sembast']
+                                                ['select'],
+                                            dataUpdate: widget.result['sembast']
+                                                ['update'],
+                                            dataDelete: widget.result['sembast']
+                                                ['delete'])
+                                        : Container(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+
+
+                Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 480,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    widget.selectDataBase[0]
+                                        ? OperacaoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseSqlite,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['sqlite']
+                                                ['insert'],
+                                            dataSelect: widget.result['sqlite']
+                                                ['select'],
+                                            dataUpdate: widget.result['sqlite']
+                                                ['update'],
+                                            dataDelete: widget.result['sqlite']
+                                                ['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[1]
+                                        ? OperacaoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseCouchBase,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget
+                                                .result['couchbase']['insert'],
+                                            dataSelect: widget
+                                                .result['couchbase']['select'],
+                                            dataUpdate: widget
+                                                .result['couchbase']['update'],
+                                            dataDelete: widget
+                                                .result['couchbase']['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[2]
+                                        ? OperacaoResult(
+                                            tituloDataBase: tituloDataBaseHive,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['hive']
+                                                ['insert'],
+                                            dataSelect: widget.result['hive']
+                                                ['select'],
+                                            dataUpdate: widget.result['hive']
+                                                ['update'],
+                                            dataDelete: widget.result['hive']
+                                                ['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[3]
+                                        ? OperacaoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseObjectBox,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget
+                                                .result['objectbox']['insert'],
+                                            dataSelect: widget
+                                                .result['objectbox']['select'],
+                                            dataUpdate: widget
+                                                .result['objectbox']['update'],
+                                            dataDelete: widget
+                                                .result['objectbox']['delete'])
+                                        : Container(),
+                                    widget.selectDataBase[4]
+                                        ? OperacaoResult(
+                                            tituloDataBase:
+                                                tituloDataBaseSembast,
+                                            tituloOperacaoInsert:
+                                                tituloOperacaoInsert,
+                                            tituloOperacaoSelect:
+                                                tituloOperacaoSelect,
+                                            tituloOperacaoUpdate:
+                                                tituloOperacaoUpdate,
+                                            tituloOperacaoDelete:
+                                                tituloOperacaoDelete,
+                                            dataInsert: widget.result['sembast']
+                                                ['insert'],
+                                            dataSelect: widget.result['sembast']
+                                                ['select'],
+                                            dataUpdate: widget.result['sembast']
+                                                ['update'],
+                                            dataDelete: widget.result['sembast']
+                                                ['delete'])
+                                        : Container(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+              ],
+            )),
       ),
     );
   }
 }
-
-

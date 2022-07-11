@@ -1,10 +1,9 @@
-import 'package:analise_de_banco_de_dados/screens/result_screen/geral_result/calculado_result.dart';
-import 'package:analise_de_banco_de_dados/screens/result_screen/geral_result/coluna_operacao_geral.dart';
+import 'package:analise_de_banco_de_dados/screens/result_screen/operacao_result/calculado_result.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class GeralResult extends StatefulWidget {
-  const GeralResult({
+class OperacaoResult extends StatefulWidget {
+  const OperacaoResult({
     Key? key,
     required this.tituloDataBase,
     required this.tituloOperacaoInsert,
@@ -28,10 +27,10 @@ class GeralResult extends StatefulWidget {
   final List<dynamic> dataSelect; 
 
   @override
-  State<GeralResult> createState() => _GeralResultState();
+  State<OperacaoResult> createState() => _OperacaoResultState();
 }
 
-class _GeralResultState extends State<GeralResult> {
+class _OperacaoResultState extends State<OperacaoResult> {
   var mediaInsert = 0.0;
   var mediaSelect = 0.0;
   var mediaUpdate = 0.0;
@@ -184,19 +183,7 @@ class _GeralResultState extends State<GeralResult> {
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ColunaOperacaoGeral(
-                  titulo: widget.tituloOperacaoInsert, data: widget.dataInsert),
-              ColunaOperacaoGeral(
-                  titulo: widget.tituloOperacaoSelect, data: widget.dataSelect),
-              ColunaOperacaoGeral(
-                  titulo: widget.tituloOperacaoUpdate, data: widget.dataUpdate),
-              ColunaOperacaoGeral(
-                  titulo: widget.tituloOperacaoDelete, data: widget.dataDelete),
-            ],
-          ),
+         
           CalculadoResult(
             tituloCalculo: tituloCalculoMedia,
             dataInsert: mediaInsert, 

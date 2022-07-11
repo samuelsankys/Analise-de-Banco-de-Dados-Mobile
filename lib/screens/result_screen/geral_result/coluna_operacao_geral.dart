@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ColunaOperacaoGeral extends StatelessWidget {
   final String titulo;
-  final List<double> data;
+  final List<dynamic> data;
 
   const ColunaOperacaoGeral(
       {Key? key, required this.titulo, required this.data})

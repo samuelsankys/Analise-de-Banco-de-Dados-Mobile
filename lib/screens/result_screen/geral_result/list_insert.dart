@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ListGeral extends StatelessWidget {
-  final List<double> data;
+  final List<dynamic> data;
 
   const ListGeral({
     Key? key,
@@ -12,14 +12,14 @@ class ListGeral extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return SizedBox(
-      height:310,
+      height:data.length*14+50,
       child: ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         //scrollDirection: Axis.vertical,
-        itemCount: 20,
+        itemCount: data.length,
         itemBuilder: (context, index) {
           return Text(
-            '0,002',
+            data[index],
             style: TextStyle(fontSize: 12, color: Colors.black87),
           );
         }),
