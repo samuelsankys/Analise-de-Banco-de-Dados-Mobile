@@ -169,6 +169,7 @@ class _GeralResultState extends State<GeralResult> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 20),
+          Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -184,6 +185,7 @@ class _GeralResultState extends State<GeralResult> {
               ),
             ],
           ),
+          Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -225,6 +227,7 @@ class _GeralResultState extends State<GeralResult> {
             dataUpdate: limInferiorUpdate,
             dataDelete: limInferiorDelete
           ),
+          SizedBox(height: 40),
         ],
       ),
     );

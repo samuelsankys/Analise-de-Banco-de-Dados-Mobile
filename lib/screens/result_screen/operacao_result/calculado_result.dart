@@ -31,12 +31,15 @@ class _CalculadoResultState extends State<CalculadoResult> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.tituloCalculo,
-            style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87),
+          Container(
+            margin: EdgeInsets.only(top:5, bottom:7),
+            child: Text(
+              widget.tituloCalculo,
+              style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87),
+            ),
           ),
           Container(
             //margin: EdgeInsets.only(right: 10),

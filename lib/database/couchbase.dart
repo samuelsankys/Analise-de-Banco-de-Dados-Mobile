@@ -45,7 +45,9 @@ class CouchBaseHelper {
   // Delete
   Future<void> deleteItem(id) async {
     final doc = await database?.document(id.toString());
-    await database?.deleteDocument(doc!);
+    if(doc != null){
+      await database?.deleteDocument(doc);
+    }
   }
 
   selectAll()async{

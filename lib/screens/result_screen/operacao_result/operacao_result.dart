@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class OperacaoResult extends StatefulWidget {
-  const OperacaoResult({
-    Key? key,
-    required this.tituloDataBase,
-    required this.tituloOperacaoInsert,
-    required this.tituloOperacaoSelect,
-    required this.tituloOperacaoUpdate,
-    required this.tituloOperacaoDelete,
-    required this.dataInsert,
-    required this.dataSelect,
-    required this.dataUpdate,
-    required this.dataDelete
-  }) : super(key: key);
+  const OperacaoResult(
+      {Key? key,
+      required this.tituloDataBase,
+      required this.tituloOperacaoInsert,
+      required this.tituloOperacaoSelect,
+      required this.tituloOperacaoUpdate,
+      required this.tituloOperacaoDelete,
+      required this.dataInsert,
+      required this.dataSelect,
+      required this.dataUpdate,
+      required this.dataDelete})
+      : super(key: key);
 
   final String tituloOperacaoInsert;
   final String tituloOperacaoSelect;
@@ -24,7 +24,7 @@ class OperacaoResult extends StatefulWidget {
   final List<dynamic> dataInsert;
   final List<dynamic> dataUpdate;
   final List<dynamic> dataDelete;
-  final List<dynamic> dataSelect; 
+  final List<dynamic> dataSelect;
 
   @override
   State<OperacaoResult> createState() => _OperacaoResultState();
@@ -47,8 +47,8 @@ class _OperacaoResultState extends State<OperacaoResult> {
   var limSuperiorSelect = 0.0;
   var limSuperiorUpdate = 0.0;
   var limSuperiorDelete = 0.0;
-     
- @override
+
+  @override
   void initState() {
     super.initState();
 
@@ -62,18 +62,26 @@ class _OperacaoResultState extends State<OperacaoResult> {
     varianciaUpdate = variancia(widget.dataUpdate, mediaUpdate);
     varianciaDelete = variancia(widget.dataDelete, mediaDelete);
 
-    limInferiorInsert = limInferior(widget.dataInsert, mediaInsert, varianciaInsert);
-    limInferiorSelect = limInferior(widget.dataSelect, mediaSelect, varianciaSelect);
-    limInferiorUpdate = limInferior(widget.dataUpdate, mediaUpdate, varianciaUpdate);
-    limInferiorDelete = limInferior(widget.dataDelete, mediaDelete, varianciaDelete);
+    limInferiorInsert =
+        limInferior(widget.dataInsert, mediaInsert, varianciaInsert);
+    limInferiorSelect =
+        limInferior(widget.dataSelect, mediaSelect, varianciaSelect);
+    limInferiorUpdate =
+        limInferior(widget.dataUpdate, mediaUpdate, varianciaUpdate);
+    limInferiorDelete =
+        limInferior(widget.dataDelete, mediaDelete, varianciaDelete);
 
-    limSuperiorInsert = limSuperior(widget.dataInsert, mediaInsert, varianciaInsert);
-    limSuperiorSelect = limSuperior(widget.dataSelect, mediaSelect, varianciaSelect);
-    limSuperiorUpdate = limSuperior(widget.dataUpdate, mediaUpdate, varianciaUpdate);
-    limSuperiorDelete = limSuperior(widget.dataDelete, mediaDelete, varianciaDelete);
+    limSuperiorInsert =
+        limSuperior(widget.dataInsert, mediaInsert, varianciaInsert);
+    limSuperiorSelect =
+        limSuperior(widget.dataSelect, mediaSelect, varianciaSelect);
+    limSuperiorUpdate =
+        limSuperior(widget.dataUpdate, mediaUpdate, varianciaUpdate);
+    limSuperiorDelete =
+        limSuperior(widget.dataDelete, mediaDelete, varianciaDelete);
   }
 
-  limInferior(valorList, valorMedia, valorVariancia){
+  limInferior(valorList, valorMedia, valorVariancia) {
     var tam = valorList.length;
     var soma = 0.0;
     var z = {
@@ -99,11 +107,11 @@ class _OperacaoResultState extends State<OperacaoResult> {
       20: 2.845
     };
     var desviopadrao = sqrt(valorVariancia);
-    
-    return valorMedia - (z[tam-1]!*(desviopadrao/sqrt(tam)));
+
+    return valorMedia - (z[tam - 1]! * (desviopadrao / sqrt(tam)));
   }
 
-  limSuperior(valorList, valorMedia, valorVariancia){
+  limSuperior(valorList, valorMedia, valorVariancia) {
     var tam = valorList.length;
     var z = {
       1: 63.657,
@@ -128,32 +136,29 @@ class _OperacaoResultState extends State<OperacaoResult> {
       20: 2.845
     };
     var desviopadrao = sqrt(valorVariancia);
-    
-    return valorMedia + (z[tam-1]!*(desviopadrao/sqrt(tam)));
+
+    return valorMedia + (z[tam - 1]! * (desviopadrao / sqrt(tam)));
   }
 
-  variancia(valorList, valorMedia){
+  variancia(valorList, valorMedia) {
     var tam = valorList.length;
     var soma = 0.0;
 
-    for(var i=0; i < tam; i++){
-      soma += pow((double.parse(valorList[i]) - valorMedia),2);
+    for (var i = 0; i < tam; i++) {
+      soma += pow((double.parse(valorList[i]) - valorMedia), 2);
     }
-    return soma/tam;
+    return soma / tam;
   }
 
-  media(valorList){
+  media(valorList) {
     var tam = valorList.length;
     var soma = 0.0;
 
-    for(var i=0; i < tam; i++){
+    for (var i = 0; i < tam; i++) {
       soma += double.parse(valorList[i]);
     }
-    return soma/tam;
+    return soma / tam;
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -162,12 +167,12 @@ class _OperacaoResultState extends State<OperacaoResult> {
     String tituloCalculoInferior = 'Limite Inferior';
     String tituloCalculoSuperior = 'Limite Superior';
 
-
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 20),
+          Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -183,38 +188,63 @@ class _OperacaoResultState extends State<OperacaoResult> {
               ),
             ],
           ),
-         
-          CalculadoResult(
-            tituloCalculo: tituloCalculoMedia,
-            dataInsert: mediaInsert, 
-            dataSelect: mediaSelect, 
-            dataUpdate: mediaUpdate,
-            dataDelete: mediaDelete
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 20, bottom: 10),
+                child: Text('Insert',
+                style: TextStyle(fontSize: 15, color: Colors.black87, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20, bottom: 10),
+                child: Text('Select',
+                style: TextStyle(fontSize: 15, color: Colors.black87, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20, bottom: 10),
+                child: Text('Update',
+                style: TextStyle(fontSize: 15, color: Colors.black87, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20, bottom: 10),
+                child: Text('Delete',
+                style: TextStyle(fontSize: 15, color: Colors.black87, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
           CalculadoResult(
-            tituloCalculo: tituloCalculoVariancia,
-            dataInsert: varianciaInsert, 
-            dataSelect: varianciaSelect, 
-            dataUpdate: varianciaUpdate,
-            dataDelete: varianciaDelete
-          ),
+              tituloCalculo: tituloCalculoMedia,
+              dataInsert: mediaInsert,
+              dataSelect: mediaSelect,
+              dataUpdate: mediaUpdate,
+              dataDelete: mediaDelete),
           CalculadoResult(
-            tituloCalculo: tituloCalculoSuperior,
-            dataInsert: limSuperiorInsert, 
-            dataSelect: limSuperiorSelect, 
-            dataUpdate: limSuperiorUpdate,
-            dataDelete: limSuperiorDelete
-          ),
+              tituloCalculo: tituloCalculoVariancia,
+              dataInsert: varianciaInsert,
+              dataSelect: varianciaSelect,
+              dataUpdate: varianciaUpdate,
+              dataDelete: varianciaDelete),
           CalculadoResult(
-            tituloCalculo: tituloCalculoInferior,
-            dataInsert: limInferiorInsert, 
-            dataSelect: limInferiorSelect, 
-            dataUpdate: limInferiorUpdate,
-            dataDelete: limInferiorDelete
-          ),
+              tituloCalculo: tituloCalculoSuperior,
+              dataInsert: limSuperiorInsert,
+              dataSelect: limSuperiorSelect,
+              dataUpdate: limSuperiorUpdate,
+              dataDelete: limSuperiorDelete),
+          CalculadoResult(
+              tituloCalculo: tituloCalculoInferior,
+              dataInsert: limInferiorInsert,
+              dataSelect: limInferiorSelect,
+              dataUpdate: limInferiorUpdate,
+              dataDelete: limInferiorDelete),
+          SizedBox(height: 40),
         ],
       ),
     );
   }
 }
-

@@ -7,11 +7,9 @@ class CalculadoResult extends StatefulWidget {
   final double dataDelete;
   final double dataInsert;
   final double dataSelect;
-  final String tituloCalculo;
 
   const CalculadoResult({
     Key? key,
-    required this.tituloCalculo,
     required this.dataInsert,
     required this.dataSelect,
     required this.dataUpdate,
@@ -31,13 +29,6 @@ class _CalculadoResultState extends State<CalculadoResult> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.tituloCalculo,
-            style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87),
-          ),
           Container(
             //margin: EdgeInsets.only(right: 10),
             child: Row(
