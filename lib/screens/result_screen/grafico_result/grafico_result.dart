@@ -64,7 +64,7 @@ class _GraficoResultState extends State<GraficoResult> {
             ],
           ),
           Divider(),
-
+  SizedBox(height: 20),
           // CalculadoResult(
           //     dataInsert: mediaInsert,
           //     dataSelect: mediaSelect,
@@ -78,9 +78,23 @@ class _GraficoResultState extends State<GraficoResult> {
                 maxY: numMaior + (numMaior * 0.1),
                 minY: 0,
                 groupsSpace: 20,
-                //rangeAnnotations: RangeAnnotations( horizontalRangeAnnotations: [HorizontalRangeAnnotation(y1: 0.00000, y2: 0.3)],),
-                borderData: FlBorderData(show: false ),
-                barTouchData: BarTouchData(enabled: true,touchTooltipData: BarTouchTooltipData(tooltipBgColor: Colors.white)),
+                titlesData: FlTitlesData(
+                  show: true,
+                  rightTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                ),
+                borderData: FlBorderData(show: false),
+                barTouchData: BarTouchData(
+                  enabled: true,
+                  touchTooltipData: BarTouchTooltipData(
+                    tooltipBgColor: Colors.white,
+                    tooltipRoundedRadius: 8,
+                  ),
+                ),
                 gridData: FlGridData(show: false, verticalInterval: 0.001),
                 barGroups: [
                   BarChartGroupData(
@@ -90,8 +104,10 @@ class _GraficoResultState extends State<GraficoResult> {
                           toY: widget.data['sqlite'] != null
                               ? widget.data['sqlite']!
                               : 0.0,
-                          color: Colors.blueGrey[600],
-                          width: 20)
+                          color: Colors.cyan[100],
+                          width: 30,
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          )
                     ],
                   ),
                   BarChartGroupData(
@@ -101,8 +117,9 @@ class _GraficoResultState extends State<GraficoResult> {
                           toY: widget.data['couchbase'] != null
                               ? widget.data['couchbase']!
                               : 0.0,
-                          color: Colors.red,
-                          width: 20)
+                          color: Colors.yellow[400],
+                          width: 30,
+                          borderRadius: BorderRadius.all(Radius.circular(4)),)
                     ],
                   ),
                   BarChartGroupData(
@@ -112,8 +129,9 @@ class _GraficoResultState extends State<GraficoResult> {
                           toY: widget.data['hive'] != null
                               ? widget.data['hive']!
                               : 0.0,
-                          color: Colors.pink[600],
-                          width: 20)
+                          color: Colors.pink[400],
+                          width: 30,
+                          borderRadius: BorderRadius.all(Radius.circular(4)),)
                     ],
                   ),
                   BarChartGroupData(
@@ -123,8 +141,9 @@ class _GraficoResultState extends State<GraficoResult> {
                           toY: widget.data['objectbox'] != null
                               ? widget.data['objectbox']!
                               : 0.0,
-                          color: Colors.greenAccent[600],
-                          width: 20)
+                          color: Colors.green[400],
+                          width: 30,
+                          borderRadius: BorderRadius.all(Radius.circular(4)),)
                     ],
                   ),
                   BarChartGroupData(
@@ -134,8 +153,9 @@ class _GraficoResultState extends State<GraficoResult> {
                           toY: widget.data['sembast'] != null
                               ? widget.data['sembast']!
                               : 0.0,
-                          color: Colors.deepPurple[600],
-                          width: 20)
+                          color: Colors.deepPurple[400],
+                          width: 30,
+                          borderRadius: BorderRadius.all(Radius.circular(4)), )
                     ],
                   ),
                 ],
@@ -144,6 +164,77 @@ class _GraficoResultState extends State<GraficoResult> {
               swapAnimationCurve: Curves.linear,
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: Row(
+                  children: [
+                    Container(
+                      height: 10,
+                      width: 10,
+                      color: Colors.cyan[100],
+                    ),
+                    SizedBox(width: 2 ),
+                    Text('SQLite')
+                  ],
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    Container(
+                      height: 10,
+                      width: 10,
+                      color: Colors.yellow[400],
+                    ),
+                    SizedBox(width: 2 ),
+                    Text('C.Base')
+                  ],
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    Container(
+                      height: 10,
+                      width: 10,
+                      color: Colors.pink[400],
+                    ),
+                    SizedBox(width: 2 ),
+                    Text('Hive')
+                  ],
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    Container(
+                      height: 10,
+                      width: 10,
+                      color: Colors.green[400],
+                    ),
+                    SizedBox(width: 2 ),
+                    Text('ObjectB.')
+                  ],
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    Container(
+                      height: 10,
+                      width: 10,
+                      color: Colors.deepPurple[400],
+                    ),
+                    SizedBox(width: 2 ),
+                    Text('Sembast')
+                  ],
+                ),
+              ),
+              
+            ],
+          )
         ],
       ),
     );
