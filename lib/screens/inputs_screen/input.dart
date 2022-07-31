@@ -512,7 +512,7 @@ class _InputScreenState extends State<InputScreen> {
     await sqlite.createTable();
     r = int.parse(r);
     n = int.parse(n);
-
+    print('niciaou');
     var runtimeSqlite = {};
     Map<String, List<dynamic>> insertRes = await insertSQLite(n, r);
     var selectRes = await selectSQLite(n, r, insertRes['ids']);
@@ -567,6 +567,7 @@ class _InputScreenState extends State<InputScreen> {
 
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
+      print('o i: ${i}');
       for (var j = 0; j < n; j++) {
         var item = await sqlite.select(ids[i + j]);
       }

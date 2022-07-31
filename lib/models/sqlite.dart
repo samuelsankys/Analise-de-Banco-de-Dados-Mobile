@@ -3,7 +3,7 @@ import "package:sqflite/sqflite.dart" as sql;
 
 class SQLHelper {
   static Future<void> createTables(sql.Database database) async {
-    await database.execute("""CREATE TABLE sqlite(
+    await database.execute("""CREATE TABLE IF NOT EXISTS sqlite(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         A0 INTEGER,
         A1 REAL,
