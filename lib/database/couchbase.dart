@@ -9,8 +9,7 @@ class CouchBaseHelper {
 
 
   Future openDB() async {
-    database = await Database.openAsync('couchbase');
-    //return database;
+    database = await Database.openAsync('couchbase2');
   } 
   
   // INSERT

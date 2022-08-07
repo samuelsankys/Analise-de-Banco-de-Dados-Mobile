@@ -91,6 +91,8 @@ class _InputScreenState extends State<InputScreen> {
     runtimeCouchBase['update'] = updateRes;
     runtimeCouchBase['delete'] = deleteRes;
 
+    print('db couch ');
+    print(db);
     await couchBaseController.closeObject();
     return runtimeCouchBase;
   }
@@ -103,7 +105,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        var id = await couchBaseController.insert(i + j);
+        var id = await couchBaseController.insert(( i * n)+ j);
         print('id: ${id}');
         ids.add(id);
       }
@@ -125,7 +127,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        var item = await couchBaseController.select(ids[i + j]);
+        var item = await couchBaseController.select(ids[( i * n)+ j]);
         print('select: ${item}');
       }
       var fim = new DateTime.now();
@@ -144,7 +146,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        await couchBaseController.update(ids[i + j]);
+        await couchBaseController.update(ids[( i * n)+ j]);
         //print('update: ${item}');
       }
       var fim = new DateTime.now();
@@ -164,7 +166,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        await couchBaseController.delete(ids[i + j]);
+        await couchBaseController.delete(ids[( i * n)+ j]);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -191,7 +193,6 @@ class _InputScreenState extends State<InputScreen> {
     var updateRes = await updateSembast(n, r, insertRes['ids']);
     var selectRes = await selectSembast(n, r, insertRes['ids']);
     var deleteRes = await deleteSembast(n, r, insertRes['ids']);
-    selectRes = await selectSembast(n, r, insertRes['ids']);
 
     print(insertRes['differenceInsert']);
     print(selectRes);
@@ -238,7 +239,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        var item = await sembastController.select(ids[i + j]);
+        var item = await sembastController.select(ids[( i * n)+ j]);
         print('select: ${item}');
       }
       var fim = new DateTime.now();
@@ -257,7 +258,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        var item = await sembastController.update(ids[i + j]);
+        var item = await sembastController.update(ids[( i * n)+ j]);
         print('update: ${item}');
       }
       var fim = new DateTime.now();
@@ -277,7 +278,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        await sembastController.delete(ids[i + j]);
+        await sembastController.delete(ids[( i * n)+ j]);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -328,6 +329,7 @@ class _InputScreenState extends State<InputScreen> {
       for (var j = 0; j < n; j++) {
         var id = await objectBoxController.insert();
         ids.add(id);
+        print(id);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -347,7 +349,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        var item = await objectBoxController.select(ids[i + j]);
+        var item = await objectBoxController.select(ids[( i * n)+ j]);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -365,7 +367,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        var item = await objectBoxController.update(ids[i + j]);
+        var item = await objectBoxController.update(ids[( i * n)+ j]);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -384,7 +386,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        await objectBoxController.delete(ids[i + j]);
+        await objectBoxController.delete(ids[( i * n)+ j]);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -417,7 +419,7 @@ class _InputScreenState extends State<InputScreen> {
     print(selectRes);
     print(updateRes);
     print(deleteRes);
-    //print(select);
+  
 
     await hiveController.dropHive();
 
@@ -454,7 +456,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        var item = await hiveController.select(i + j);
+        var item = await hiveController.select(( i * n)+ j);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -472,7 +474,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        var item = await hiveController.update(i + j);
+        var item = await hiveController.update(( i * n)+ j);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -491,7 +493,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        await hiveController.delete(i + j);
+        await hiveController.delete(( i * n)+ j);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -569,7 +571,7 @@ class _InputScreenState extends State<InputScreen> {
       var inicio = new DateTime.now();
       print('o i: ${i}');
       for (var j = 0; j < n; j++) {
-        var item = await sqlite.select(ids[i + j]);
+        var item = await sqlite.select(ids[( i * n)+ j]);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -587,7 +589,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        var item = await sqlite.update(ids[i + j]);
+        var item = await sqlite.update(ids[( i * n)+ j]);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -606,7 +608,7 @@ class _InputScreenState extends State<InputScreen> {
     for (var i = 0; i < r; i++) {
       var inicio = new DateTime.now();
       for (var j = 0; j < n; j++) {
-        await sqlite.delete(ids[i + j]);
+        await sqlite.delete(ids[( i * n)+ j]);
       }
       var fim = new DateTime.now();
       var diffEmMicro = (fim.difference(inicio).inMicroseconds);
@@ -674,6 +676,9 @@ class _InputScreenState extends State<InputScreen> {
                             if (value != null && value.isEmpty) {
                               return "É necessário informar o valor";
                             }
+                             if (value!.length < 5 || value.length >30) {
+                              return "O valor deve estar entre 5 e 30";
+                            }
                             return null;
                           },
                         ),
@@ -699,6 +704,10 @@ class _InputScreenState extends State<InputScreen> {
                             if (value!.isEmpty) {
                               return "É necessário informar o valor";
                             }
+                            if (value.length < 5 || value.length >20) {
+                              return "O valor deve estar entre 5 e 20";
+                            }
+                          
                             return null;
                           },
                         ),
