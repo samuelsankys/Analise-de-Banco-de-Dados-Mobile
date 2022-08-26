@@ -1,0 +1,42 @@
+import 'package:analise_de_banco_de_dados/database/objectBox.dart';
+import 'package:analise_de_banco_de_dados/models/objectBox_models.dart';
+
+
+class ObjectBoxController {
+ final _objectBoxHelper = ObjectBoxHelper();
+
+Future<int> insert() async{
+     return await _objectBoxHelper.createItem( ObjectBoxModel(
+        A0: 3000, 
+        A1: 40.5, 
+        A2: 'abcdefghijklmnopqrstuvwxyz', 
+        A3: 'abcdefghijklmnopqrstuvwxyz', 
+        A4: DateTime.now().toString(),
+        A5: DateTime.now()
+     ));
+  }
+
+  select(id) async {
+    return await _objectBoxHelper.getById(id);
+  }
+  
+  update(id) async {
+    await _objectBoxHelper.updateItem(  ObjectBoxModel(
+        id: id,
+        A0: 9999, 
+        A1: 333.8, 
+        A2: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
+        A3: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
+        A4 : DateTime.now().toString(),
+        A5 : DateTime.now()
+    ));
+  }
+
+  delete(id) async {
+    await _objectBoxHelper.deleteItem(id);
+  }
+
+  closeObject() async{
+    await _objectBoxHelper.closeObjectBox();
+  }
+}
