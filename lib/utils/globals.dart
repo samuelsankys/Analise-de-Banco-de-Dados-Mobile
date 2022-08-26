@@ -1,0 +1,1 @@
+library analise_de_banco_de_dados.globals;
