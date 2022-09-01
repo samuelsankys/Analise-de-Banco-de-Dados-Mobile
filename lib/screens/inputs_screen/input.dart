@@ -676,7 +676,7 @@ class _InputScreenState extends State<InputScreen> {
                             if (value != null && value.isEmpty) {
                               return "É necessário informar o valor";
                             }
-                             if (value!.length < 5 || value.length >30) {
+                             if (int.parse(value!) < 5 || int.parse(value) > 30) {
                               return "O valor deve estar entre 5 e 30";
                             }
                             return null;
@@ -704,7 +704,7 @@ class _InputScreenState extends State<InputScreen> {
                             if (value!.isEmpty) {
                               return "É necessário informar o valor";
                             }
-                            if (value.length < 5 || value.length >20) {
+                            if (int.parse(value) < 5 || int.parse(value) >20) {
                               return "O valor deve estar entre 5 e 20";
                             }
                           
